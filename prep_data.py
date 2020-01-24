@@ -9,8 +9,13 @@ maxlon=9.995315
 
 stations=pd.read_csv("data/stations.csv")
 
-def get_stations(stations):    
+def get_stations(stations=stations):    
     stations_on_route=stations.loc[
              (stations.latitude>minlat)&(stations.latitude<maxlat)&
             (stations.longitude>minlon)&(stations.longitude<maxlon)]
     return stations_on_route.uuid
+
+
+def presel_data(df):
+    df1 = df.loc[df.station_uuid.isin(get_stations())]
+    return df1 
