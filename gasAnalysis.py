@@ -14,7 +14,7 @@ def main():
     my_file = pathlib.Path("data/processed/"+name)
     if not my_file.exists ():
         print("file does NOT exist: require processing (save output to processed folder)")
-        prices_raw=pd.read_csv("data/raw/"+name)
+        prices_raw=pd.read_csv("data/raw/GasPrices/"+name)
         prices = presel_data(prices_raw)
         prices.to_csv(my_file)
     else:
