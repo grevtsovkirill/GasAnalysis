@@ -1,6 +1,8 @@
+import os
 import pandas as pd
 import numpy as np
 import pathlib
+
 
 #define geographical constraints
 minlat=53.567181
@@ -42,8 +44,20 @@ def loop_days(beg, end):
             return 0
     return days_list
 
+def month_to_num_str(mon_num=1):
+    mon_str=''
+    if mon_num<10:
+        mon_str='0'+str(mon_num)
+    elif mon_num>9 and mon_num<13:
+        mon_str=str(mon_num)
+    else:
+        print("smth went wrong")
+        return 0
+    return mon_str
+        
 
-def give_me_data():
+
+def prepare_data():
     months=["01"]
     #days=["01"] day=1,month=1,year=2020
     days=loop_days(1,31)
@@ -60,5 +74,21 @@ def give_me_data():
                 prices=pd.read_csv(my_file)
                 
                 print("Read {} entries for {}".format(len(prices),my_file))
-    return prices
+    
+def give_me_data(mon=1,year=2020,spec_id = "e1a15081-2617-9107-e040-0b0a3dfe563c"):
+    data_dir = 'data/processed/'+str(year)+'/'+month_to_num_str(mon)
+    merged_data = pd.DataFrame()
+    
+
+    for filename in os.listdir(data_dir):
+        if "csv" in filename:
+            #print(filename)
+            dataset=pd.read_csv(os.path.join(data_dir, filename))
+            #print("all ",len(dataset))
+            dataset_spec=dataset.loc[dataset.station_uuid==spec_id]
+            #print("sel ",len(dataset_spec))
+            merged_data = merged_data.append(dataset_spec)
+
+    merged_data.sort_values('date', ascending=True, inplace=True)
+    return merged_data
 
