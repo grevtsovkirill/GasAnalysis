@@ -57,13 +57,13 @@ def month_to_num_str(mon_num=1):
         
 
 
-def prepare_data():
-    months=["01"]
+def prepare_data(month="01",year="2020"):
+    months=[month]
     #days=["01"] day=1,month=1,year=2020
     days=loop_days(1,31)
     for mon in months:
         for day in days: 
-            name="2020/"+mon+"/2020-"+mon+"-"+day+"-prices.csv"
+            name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
             my_file = pathlib.Path("data/processed/"+name)
             if not my_file.exists ():
                 print("file does NOT exist: require processing (save output to processed folder)")
