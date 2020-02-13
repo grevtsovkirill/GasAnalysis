@@ -9,9 +9,9 @@ from plot_helper import *
 
 def main():
     #load data
-    for i in range(1,12):
+    for i in range(1,13):
         month=month_to_num_str(i)
-        prepare_data(month,"2017")
+        prepare_data(month,"2018")
     #select data for given station
     #prices=give_me_data()
     #plot_over_time(prices)
