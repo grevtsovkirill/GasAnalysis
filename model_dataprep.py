@@ -15,7 +15,6 @@ class HistoricalData:
         min_price_data = pd.DataFrame()
         for filename in os.listdir(self.data_dir):
             if "csv" in filename:
-                print(filename)
                 dataset=pd.read_csv(os.path.join(self.data_dir, filename))
                 dataset_spec = dataset.loc[dataset.station_uuid==self.spec_id]
                 dataset_spec = dataset_spec.sort_values('date', ascending=True)
