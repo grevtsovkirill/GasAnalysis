@@ -9,11 +9,12 @@ from plot_helper import *
 
 def main():
     #load data
-    #print("prepare data in the city")    
-    #prepare_data()
+    for i in range(1,12):
+        month=month_to_num_str(i)
+        prepare_data(month,"2017")
     #select data for given station
-    prices=give_me_data()
-    plot_over_time(prices)
+    #prices=give_me_data()
+    #plot_over_time(prices)
     
 if __name__ == "__main__":
     start = time.time()
