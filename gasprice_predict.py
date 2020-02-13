@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 rawdata = HistoricalData('data/processed/total_test')
 df0 = rawdata.read_all_data()
 df = rawdata.prep_min_price(df0)
+print("Available data from: ",rawdata.startdate," to ",rawdata.stopdate)
+
 training_fraction = 0.67
 window_size = 10
 data = ModelDataPrep(df,training_fraction,window_size)
@@ -17,17 +19,19 @@ data.gen_test()
 trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
 testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
 
-model = Sequential()
-model.add(LSTM(4, input_shape=(1, window_size)))
-model.add(Dense(1))
-model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
-
-# make predictions
-trainPredict = model.predict(trainX)
-testPredict = model.predict(testX)
-
-plt.plot(data.Y_train,label='Train Data')
-plt.plot(trainPredict,label='Train Prediction')
-plt.legend()
-plt.savefig("Plots/LSTM_test.png", transparent=True)
+do_train = False
+if do_train:
+    model = Sequential()
+    model.add(LSTM(4, input_shape=(1, window_size)))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
+    
+    # make predictions
+    trainPredict = model.predict(trainX)
+    testPredict = model.predict(testX)
+    
+    plt.plot(data.Y_train,label='Train Data')
+    plt.plot(trainPredict,label='Train Prediction')
+    plt.legend()
+    plt.savefig("Plots/LSTM_test.png", transparent=True)
