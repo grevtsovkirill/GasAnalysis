@@ -52,10 +52,13 @@ class ModelDataPrep:
         return X_s, Y_s
 
     def gen_train(self):
-        x, y = self.gen_sample(self.price_train)
-        return x, y
+        x, y  = self.gen_sample(self.price_train)
+        self.X_train = x
+        self.Y_train = y
+        #return x, y
 
     def gen_test(self):
         x, y = self.gen_sample(self.price_test)
-        return x, y
+        self.X_test = x
+        self.Y_test = y
     
