@@ -35,3 +35,6 @@ class HistoricalData:
 class ModelDataPrep:
     def __init__(self, df, train):
         self.data = df
+        i = int(train_frac * len(df))
+        self.price_train = df[0: i]
+        self.price_test = df[i:]
