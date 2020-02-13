@@ -19,7 +19,7 @@ data.gen_test()
 trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
 testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
 
-do_train = False
+do_train = True
 if do_train:
     model = Sequential()
     model.add(LSTM(4, input_shape=(1, window_size)))
@@ -34,4 +34,5 @@ if do_train:
     plt.plot(data.Y_train,label='Train Data')
     plt.plot(trainPredict,label='Train Prediction')
     plt.legend()
-    plt.savefig("Plots/LSTM_test.png", transparent=True)
+    plot_name = str(histdata.startdate)+"_"+str(histdata.stopdate)
+    plt.savefig("Plots/LSTM_train_"+plot_name+".png", transparent=True)
