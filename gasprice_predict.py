@@ -3,6 +3,8 @@ from model_dataprep import *
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+import matplotlib.pyplot as plt
+
 
 rawdata = HistoricalData('data/processed/total_test')
 df0 = rawdata.read_all_data()
@@ -21,7 +23,11 @@ model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
 
-#print(data.X_test)
-#print(data.Y_test)
-#print(trainX)
+# make predictions
+trainPredict = model.predict(trainX)
+testPredict = model.predict(testX)
 
+plt.plot(data.Y_train,label='Train Data')
+plt.plot(trainPredict,label='Train Prediction')
+plt.legend()
+plt.savefig("Plots/LSTM_test.png", transparent=True)
