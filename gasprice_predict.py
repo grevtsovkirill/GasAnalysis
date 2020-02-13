@@ -6,10 +6,10 @@ from keras.layers import LSTM
 import matplotlib.pyplot as plt
 
 
-rawdata = HistoricalData('data/processed/total_test')
-df0 = rawdata.read_all_data()
-df = rawdata.prep_min_price(df0)
-print("Available data from: ",rawdata.startdate," to ",rawdata.stopdate)
+histdata = HistoricalData('data/processed/total_test')
+histdata.get_data_for_prediction()
+df = histdata.data_for_prediction
+print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
 
 training_fraction = 0.67
 window_size = 10
