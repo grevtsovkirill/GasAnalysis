@@ -32,7 +32,11 @@ class HistoricalData:
         self.stopdate = df.date.iloc[-1]
         return df
 
-
+    def get_data_for_prediction(self):
+        df_all = self.read_all_data()
+        df_prep = self.prep_min_price(df_all)
+        self.data_for_prediction = df_prep
+        
 class ModelDataPrep:
     def __init__(self, df, train_frac, win_len=1):
         self.data = df
