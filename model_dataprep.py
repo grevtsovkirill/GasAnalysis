@@ -28,9 +28,11 @@ class HistoricalData:
         df = df[['date', self.gas_type]].copy()
         df.loc[:,'date']=pd.to_datetime(df['date'],utc=True).dt.date
         df = df.reset_index(drop=True)
-        print("Available data from: ",df.date.iloc[0]," to ",df.date.iloc[-1])
+        self.startdate = df.date.iloc[0]
+        self.stopdate = df.date.iloc[-1]
         return df
-        
+
+
 class ModelDataPrep:
     def __init__(self, df, train_frac, win_len=1):
         self.data = df
