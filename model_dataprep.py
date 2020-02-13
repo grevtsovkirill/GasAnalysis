@@ -33,8 +33,20 @@ class HistoricalData:
         return df
         
 class ModelDataPrep:
-    def __init__(self, df, train):
+    def __init__(self, df, train_frac):
         self.data = df
         i = int(train_frac * len(df))
         self.price_train = df[0: i]
         self.price_test = df[i:]
+
+    def gen_train(self, win_len=1):
+        input_train = []
+        output_train = []
+        for i in range(len(self.price_train) - win_len):
+            x = np.array(self.price_train.iloc[i: i + win_len, 1])
+            y = np.array([self.price_train.iloc[i + win_len, 1]], np.float64)
+            input_train.append(x)
+            output_train.append(y)
+            X_train = np.array(input_train)
+            Y_train = np.array(output_train)
+        return X_train, Y_train
