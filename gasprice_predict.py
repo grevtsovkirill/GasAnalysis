@@ -17,7 +17,7 @@ print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
 range_name = str(histdata.startdate)+"_"+str(histdata.stopdate)
 
 if debug:
-    #plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
+    plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
     file_name = 'data/Tableau/'+range_name+'.csv'
     df.to_csv(file_name, sep=',')
 
