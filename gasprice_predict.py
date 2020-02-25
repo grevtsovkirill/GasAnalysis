@@ -3,7 +3,7 @@ import numpy as np
 from model_dataprep import *
 from plot_helper import *
 
-debug = False
+debug = True
 do_train = True
 do_load = True
 training_fraction = 0.69
@@ -17,7 +17,9 @@ print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
 range_name = str(histdata.startdate)+"_"+str(histdata.stopdate)
 
 if debug:
-    plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
+    #plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
+    file_name = 'data/Tableau/'+range_name+'.csv'
+    df.to_csv(file_name, sep=',')
 
 data = ModelDataPrep(df,training_fraction,window_size)
 data.gen_train()
