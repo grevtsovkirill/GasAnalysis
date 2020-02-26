@@ -2,6 +2,7 @@ import numpy as np
 
 from model_dataprep import *
 from plot_helper import *
+from selected import *
 
 debug = True
 do_train = True
@@ -9,7 +10,9 @@ do_load = True
 training_fraction = 0.69
 window_size = 10
 
-spec_id = 'e1a15081-2617-9107-e040-0b0a3dfe563c'
+spec_id = fav_stations['hem_home']['id']
+#'e1a15081-2617-9107-e040-0b0a3dfe563c'
+print(fav_stations['hem_home']['name'])
 histdata = HistoricalData('data/processed/total_test',spec_id)
 histdata.get_data_for_prediction()
 df = histdata.data_for_prediction
