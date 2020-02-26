@@ -3,10 +3,11 @@ import numpy as np
 import os
 
 class HistoricalData:
-    spec_id = 'e1a15081-2617-9107-e040-0b0a3dfe563c'
+    #spec_id = 'e1a15081-2617-9107-e040-0b0a3dfe563c'
     gas_type = 'e5'
-    def __init__(self, data_dir):
+    def __init__(self, data_dir, spec_id):
         self.data_dir=data_dir
+        self.spec_id=spec_id
         
     def read_all_data(self):
         '''
