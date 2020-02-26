@@ -2,7 +2,7 @@
 Extract information on gas prices close to my route. 
 
 ## Historical data
-Check evolution of the prices, variance over time.
+Check evolution of the prices, variance over time for stations along the route from work.
 Build interactive dashbord with hisorical data ["Tableau dash"](https://public.tableau.com/profile/kirill.grevtsov#!/vizhome/GasPriceAnalysis_15826513372120/Dashboard1?publish=yes):
 
 ![alt text](https://github.com/grevtsovkirill/GasAnalysis/blob/master/Plots/tableau_dash.png)
