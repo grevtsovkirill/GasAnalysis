@@ -19,5 +19,5 @@ dataset_spec[gas_type] = dataset_spec[gas_type].apply(lambda x: (x-min_val)/min_
 
 print(len(dataset_spec),dataset_spec[gas_type].min())
 print(dataset_spec)
-
+plot_over_day(dataset_spec,True,'test','day 1 ') 
 #plot_over_time(dataset_spec,True,'test','day 1 ') 
