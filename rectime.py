@@ -54,9 +54,14 @@ def get_relative_hourly_price(data_dir,filename):
 
 data_dir = 'data/processed/total'
 filename = '2020-03-11-prices.csv'
-filenames = ['2020-03-10-prices.csv','2020-03-11-prices.csv']
+filenames = ['2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
+#,'2020-03-15-prices.csv','2020-03-16-prices.csv','2020-03-17-prices.csv','2020-03-18-prices.csv','2020-03-19-prices.csv'
 for filename in filenames:
     day_array = get_relative_hourly_price(data_dir,filename)
     day_hourly_change = day_hourly_change.append(pd.Series(day_array,index=time_split_array),ignore_index=True )
 
 print(day_hourly_change)
+day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
+plot = day_hourly_change.T.plot(kind='bar',legend=False)
+fig = plot.get_figure()
+fig.savefig("Plots/relative_hourly_change.png")
