@@ -17,10 +17,11 @@ dataset_spec = dataset_spec.sort_values('date', ascending=True)
 #dataset_spec = dataset_spec.loc[dataset_spec[gas_type]<=dataset_spec[gas_type].min()][:1]
 min_val=dataset_spec[gas_type].min()
 dataset_spec[gas_type] = dataset_spec[gas_type].apply(lambda x: (x-min_val)/min_val*100 )
-
+dataset_spec.reset_index(inplace=True)
 print(len(dataset_spec),dataset_spec[gas_type].min())
 for i in range(len(dataset_spec)):
-    print(dataset_spec[gas_type].loc[i+1])
+    t_i, p_i = dataset_spec['date'][i],dataset_spec[gas_type][i]
+    print(i,'\t',t_i.time(),'\t',p_i)
 #print(dataset_spec[['date',gas_type]])
 #plot_over_day(dataset_spec,True,'test','day 1 ') 
 #plot_over_time(dataset_spec,True,'test','day 1 ') 
