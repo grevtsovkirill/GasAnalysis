@@ -36,24 +36,27 @@ def create_hourly_array(df,t_array=time_split_array,gas_type='e5'):
     return price_hour_array
 
 
+def get_relative_hourly_price(data_dir,filename):
+    dataset = pd.read_csv(os.path.join(data_dir, filename))
+    dataset_spec = dataset.loc[dataset.station_uuid==spec_id]   
+    dataset_spec = dataset_spec.loc[dataset.e5change==1]
+    dataset_spec['date'] = pd.to_datetime(dataset_spec['date'])
+    dataset_spec = dataset_spec.sort_values('date', ascending=True)
+    min_val=dataset_spec[gas_type].min()
+    dataset_spec[gas_type] = dataset_spec[gas_type].apply(lambda x: (x-min_val)/min_val*100 )
+    dataset_spec.reset_index(inplace=True)
+    #print(len(dataset_spec),dataset_spec[gas_type].min())
+
+    #create complete day-hourly map of change - i.e. fill with previous measurement if current time doesn't exist:
+    day_array = create_hourly_array(dataset_spec)
+    #print(day_array)
+    return day_array
+
 data_dir = 'data/processed/total'
 filename = '2020-03-11-prices.csv'
-dataset = pd.read_csv(os.path.join(data_dir, filename))
-dataset_spec = dataset.loc[dataset.station_uuid==spec_id]   
-dataset_spec = dataset_spec.loc[dataset.e5change==1]
-dataset_spec['date'] = pd.to_datetime(dataset_spec['date'])
-dataset_spec = dataset_spec.sort_values('date', ascending=True)
-min_val=dataset_spec[gas_type].min()
-dataset_spec[gas_type] = dataset_spec[gas_type].apply(lambda x: (x-min_val)/min_val*100 )
-dataset_spec.reset_index(inplace=True)
-print(len(dataset_spec),dataset_spec[gas_type].min())
+filenames = ['2020-03-10-prices.csv','2020-03-11-prices.csv']
+for filename in filenames:
+    day_array = get_relative_hourly_price(data_dir,filename)
+    day_hourly_change = day_hourly_change.append(pd.Series(day_array,index=time_split_array),ignore_index=True )
 
-#create complete day-hourly map of change - i.e. fill with previous measurement if current time doesn't exist:
-day_array = create_hourly_array(dataset_spec)
-print(day_array)
-#check measurements correspondance to time_split_array
-#for i in range(len(dataset_spec)):
-#    t_i, p_i = dataset_spec['date'][i],dataset_spec[gas_type][i]
-#    print(i,'\t',t_i.time()," (bin=",match_time_to_index(t_i.time()),")",'\t',p_i)
-day_hourly_change = day_hourly_change.append(pd.Series(day_array,index=time_split_array),ignore_index=True )
 print(day_hourly_change)
