@@ -64,6 +64,7 @@ for filename in filenames:
     day_info = get_relative_hourly_price(data_dir,filename)
     day_hourly_change = day_hourly_change.append(pd.Series(day_info,index=dayinfocols),ignore_index=True )
 
+day_hourly_change = day_hourly_change.set_index('date')
 print(day_hourly_change)
 day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
 #plot = day_hourly_change.T.plot(kind='bar',legend=False)
