@@ -10,11 +10,6 @@ time_split_array = pd.date_range("06:00", "23:59", freq="30min").time
 dayinfocols=np.append('min_val',time_split_array)
 dayinfocols=np.append('date',dayinfocols)
 day_hourly_change = pd.DataFrame(columns=dayinfocols)
-def match_time_to_index(time_v, t_array=time_split_array):
-    for j in range(len(t_array)):
-        if time_v > t_array[j]: 
-            if time_v < t_array[j+1]:
-                return j
             
 def create_hourly_array(df,t_array=time_split_array,gas_type='e5'):
     price_hour_array = [None]*len(t_array)
