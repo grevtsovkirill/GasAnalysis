@@ -7,6 +7,9 @@ from plot_helper import *
 st = 'star_home'
 spec_id = fav_stations[st]['id']
 time_split_array = pd.date_range("06:00", "23:59", freq="30min").time
+for i in range(len(time_split_array)):
+    time_split_array[i]=time_split_array[i].strftime("%H:%M")
+    
 dayinfocols=np.append('min_val',time_split_array)
 dayinfocols=np.append('date',dayinfocols)
 day_hourly_change = pd.DataFrame(columns=dayinfocols)
@@ -18,11 +21,11 @@ def create_hourly_array(df,t_array=time_split_array,gas_type='e5'):
         found = False
         for i in range(len(df)):           
             if j < len(t_array)-1:
-                if t_i[i].time() > t_array[j] and t_i[i].time() < t_array[j+1]:
+                if t_i[i].time().strftime("%H:%M") > t_array[j] and t_i[i].time().strftime("%H:%M") < t_array[j+1]:
                     price_hour_array[j]=p_i[i]
                     found=True
             else:
-                if t_i[i].time() > t_array[j]:
+                if t_i[i].time().strftime("%H:%M") > t_array[j]:
                     price_hour_array[j]=p_i[i]
                     found=True                    
         if not found:
@@ -52,8 +55,8 @@ def get_relative_hourly_price(data_dir,filename):
 
 data_dir = 'data/processed/total'
 filename = '2020-03-11-prices.csv'
-filenames = ['2020-03-01-prices.csv']
-#filenames = ['2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
+#filenames = ['2020-03-01-prices.csv']
+filenames = ['2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
 #,'2020-03-15-prices.csv','2020-03-16-prices.csv','2020-03-17-prices.csv','2020-03-18-prices.csv','2020-03-19-prices.csv'
 for filename in filenames:
     day_info = get_relative_hourly_price(data_dir,filename)
@@ -62,6 +65,7 @@ for filename in filenames:
 day_hourly_change = day_hourly_change.set_index('date')
 print(day_hourly_change)
 day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
-#plot = day_hourly_change.T.plot(kind='bar',legend=False)
-#fig = plot.get_figure()
-#fig.savefig("Plots/relative_hourly_change.png")
+day_hourly_change_plot = day_hourly_change.drop('min_val',axis=1)
+plot = day_hourly_change_plot.T.plot(kind='bar') #,legend=False)
+fig = plot.get_figure()
+fig.savefig("Plots/relative_hourly_change.png")
