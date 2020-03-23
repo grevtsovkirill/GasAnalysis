@@ -61,7 +61,7 @@ def day_to_num_str(indate):
     weekday, lastday = monthrange(indate.date().year,indate.date().month)
     if d_num<10:
         d_str='0'+str(d_num)
-    elif d_num>9 and d_num<lastday:
+    elif d_num>9 and d_num<lastday+1:
         d_str=str(d_num)
     else:
         print("smth went wrong")
