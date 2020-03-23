@@ -57,8 +57,8 @@ def month_to_num_str(mon_num=1):
         
 def day_to_num_str(indate):
     d_str=''
-    d_num = indate.date().day
-    weekday, lastday = monthrange(indate.date().year,indate.date().month)
+    d_num = indate.day
+    weekday, lastday = monthrange(indate.year,indate.month)
     if d_num<10:
         d_str='0'+str(d_num)
     elif d_num>9 and d_num<lastday+1:
@@ -74,8 +74,8 @@ def prepare_data(indate):
     #days=loop_days(1,lastday)
     #for day in days: 
     day=day_to_num_str(indate)
-    mon=month_to_num_str(indate.date().month)
-    year=str(indate.date().year)
+    mon=month_to_num_str(indate.month)
+    year=str(indate.year)
     name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
     my_file = pathlib.Path("data/processed/"+name)
     if not my_file.exists ():
