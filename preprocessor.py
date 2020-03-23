@@ -1,11 +1,28 @@
 import sys,os,time,stat,logging
 import pandas as pd
 import numpy as np
+import argparse
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 from prep_data import *
 from plot_helper import *
+
+parser = argparse.ArgumentParser(description='Upload data from sensor')
+parser.add_argument('-t','--type', required=True, type=str, choices=['date', 'range'], help='Choose processing type: date or range ')
+parser.add_argument('--d0', required=True, type=str, help='Date in format DD-MM-YYYY')
+parser.add_argument('--d1', required=False, type=str, help='Date in format DD-MM-YYYY')
+args = parser.parse_args()
+
+process_type = vars(args)["type"]
+initial_date = vars(args)["d0"]
+final_date = vars(args)["d1"]
+
+if (process_type=='range' and  not final_date ):
+    parser.error('The type range requires the --d1 argument')
+    
+
 
 def main():
     #load data
@@ -14,7 +31,8 @@ def main():
     #    for i in range(1,13):
     #        month=month_to_num_str(i)
     #        prepare_data(month,j)
-    prepare_data("03","2020")
+    print(process_type,initial_date)
+    #prepare_data("02","2020")
     
 if __name__ == "__main__":
     start = time.time()
