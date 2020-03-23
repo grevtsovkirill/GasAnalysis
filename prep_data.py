@@ -55,13 +55,25 @@ def month_to_num_str(mon_num=1):
         return 0
     return mon_str
         
+def day_to_num_str(indate):
+    d_str=''
+    d_num = indate.date().day
+    weekday, lastday = monthrange(indate.date().year,indate.date().month)
+    if d_num<10:
+        d_str='0'+str(d_num)
+    elif d_num>9 and d_num<lastday:
+        d_str=str(d_num)
+    else:
+        print("smth went wrong")
+        return 0
+    return d_str
+        
 
 
-def prepare_data(indate):
-    #weekday, lastday = monthrange(int(year),int(mon))
+def prepare_data(indate):    
     #days=loop_days(1,lastday)
     #for day in days: 
-    day=str(indate.date().day)
+    day=day_to_num_str(indate)
     mon=month_to_num_str(indate.date().month)
     year=str(indate.date().year)
     name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
