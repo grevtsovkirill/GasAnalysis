@@ -57,10 +57,13 @@ def month_to_num_str(mon_num=1):
         
 
 
-def prepare_data(day="01",mon="01",year="2020"):
+def prepare_data(indate):
     #weekday, lastday = monthrange(int(year),int(mon))
     #days=loop_days(1,lastday)
     #for day in days: 
+    day=str(indate.date().day)
+    mon=month_to_num_str(indate.date().month)
+    year=str(indate.date().year)
     name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
     my_file = pathlib.Path("data/processed/"+name)
     if not my_file.exists ():
