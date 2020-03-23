@@ -31,7 +31,11 @@ def main():
     #    for i in range(1,13):
     #        month=month_to_num_str(i)
     #        prepare_data(month,j)
-    print(process_type,initial_date)
+    #print(process_type,initial_date)
+    if process_type=='date':
+        dd, mm, yy = initial_date.split("-")
+        #print(type(dd))
+        prepare_data(dd, mm, yy)
     #prepare_data("02","2020")
     
 if __name__ == "__main__":

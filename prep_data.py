@@ -57,21 +57,21 @@ def month_to_num_str(mon_num=1):
         
 
 
-def prepare_data(mon="01",year="2020"):
-    weekday, lastday = monthrange(int(year),int(mon))
-    days=loop_days(1,lastday)
-    for day in days: 
-        name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
-        my_file = pathlib.Path("data/processed/"+name)
-        if not my_file.exists ():
-            print("file does NOT exist: require processing (save output to processed folder)")
-            prices_raw=pd.read_csv("data/raw/"+name)
-            prices = presel_data(prices_raw)
-            prices.to_csv(my_file)
-        else:
-            prices=pd.read_csv(my_file)
-            
-            print("Read {} entries for {}".format(len(prices),my_file))
+def prepare_data(day="01",mon="01",year="2020"):
+    #weekday, lastday = monthrange(int(year),int(mon))
+    #days=loop_days(1,lastday)
+    #for day in days: 
+    name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
+    my_file = pathlib.Path("data/processed/"+name)
+    if not my_file.exists ():
+        print("file does NOT exist: require processing (save output to processed folder)")
+        prices_raw=pd.read_csv("data/raw/"+name)
+        prices = presel_data(prices_raw)
+        prices.to_csv(my_file)
+    else:
+        prices=pd.read_csv(my_file)
+        
+    print("File already exists, Read {} entries for {}".format(len(prices),my_file))
     
 def give_me_data(mon=1,year=2020,spec_id = "e1a15081-2617-9107-e040-0b0a3dfe563c"):
     data_dir = 'data/processed/'+str(year)+'/'+month_to_num_str(mon)
