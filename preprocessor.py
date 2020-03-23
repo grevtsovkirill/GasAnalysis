@@ -19,10 +19,8 @@ def valid_date(s):
 
 parser = argparse.ArgumentParser(description='Upload data from sensor')
 parser.add_argument('-t','--type', required=True, type=str, choices=['date', 'range'], help='Choose processing type: date or range ')
-#parser.add_argument('--d0', required=True, type=str, help='Date in format DD-MM-YYYY')
 parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')
 parser.add_argument('--d1', required=False, type=valid_date, help='End date in format DD-MM-YYYY')
-#parser.add_argument('--d1', required=False, type=str, help='Date in format DD-MM-YYYY')
 args = parser.parse_args()
 
     
@@ -40,13 +38,6 @@ if (process_type=='range'):
 
 
 def main():
-    #load data
-    #years = ['2015','2016','2017','2018','2019','2020']
-    #for j in years:
-    #    for i in range(1,13):
-    #        month=month_to_num_str(i)
-    #        prepare_data(month,j)
-    #print(process_type,initial_date)
     if process_type=='date':
         prepare_data(initial_date)
     else:
