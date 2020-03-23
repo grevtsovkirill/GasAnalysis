@@ -50,8 +50,13 @@ def main():
     if process_type=='date':
         prepare_data(initial_date)
     else:
-        print(initial_date,final_date)
-    #prepare_data("02","2020")
+        #print(initial_date,final_date)
+        delta = final_date - initial_date
+        
+        for i in range(delta.days + 1):
+            day_to_proc = initial_date + datetime.timedelta(days=i)
+            print(day_to_proc)
+            prepare_data(day_to_proc)
     
 if __name__ == "__main__":
     start = time.time()
