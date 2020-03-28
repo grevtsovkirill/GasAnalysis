@@ -17,7 +17,7 @@ def valid_date(s):
         msg = "Not a valid date: '{0}'.".format(s)
         raise argparse.ArgumentTypeError(msg)
 
-parser = argparse.ArgumentParser(description='Upload data from sensor')
+parser = argparse.ArgumentParser(description='Preprocess raw data')
 parser.add_argument('-t','--type', required=True, type=str, choices=['date', 'range'], help='Choose processing type: date or range ')
 parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')
 parser.add_argument('--d1', required=False, type=valid_date, help='End date in format DD-MM-YYYY')
