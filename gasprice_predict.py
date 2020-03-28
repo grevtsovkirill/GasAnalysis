@@ -72,7 +72,6 @@ def get_predictions(df,range_name):
     
     plt.tight_layout()
     plt.savefig("Plots/LSTM_train_"+range_name+model_suf+".png", transparent=True)
-    #plt.savefig("Plots/LSTM_test_"+range_name+model_suf+".png", transparent=True)
 
 
     
