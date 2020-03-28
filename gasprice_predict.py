@@ -11,6 +11,7 @@ parser.add_argument('-s','--station', required=True, type=str, choices=['star_ho
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
 parser.add_argument('--tf', required=False, type=float, default=0.69, help="Fraction of used data for training")
 parser.add_argument('--win_size', required=False, type=int, default=10, help="Size of training window") 
+parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
 args = parser.parse_args()
 
 process_type = vars(args)["type"]
@@ -18,33 +19,24 @@ debug = vars(args)["debug"]
 st = vars(args)["station"]
 training_fraction = vars(args)["tf"]
 window_size = vars(args)["win_size"]
-
+data_path = vars(args)["inpath"]
 
 
 ###
-spec_id = fav_stations[st]['id']
-print(fav_stations[st]['name'])
-histdata = HistoricalData('data/processed/total',spec_id)
-histdata.get_data_for_prediction()
-df = histdata.data_for_prediction
-print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
-range_name = st+"_"+str(histdata.startdate)+"_"+str(histdata.stopdate)
-
-if process_type=='tableau':
+def hist_data_tableau(df,range_name):
     plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
     file_name = 'data/Tableau/'+range_name+'.csv'
     df.to_csv(file_name, sep=',')
 
-data = ModelDataPrep(df,training_fraction,window_size)
-data.gen_train()
-data.gen_test()  
-trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
-testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
+###
 
+def get_predictions(df,range_name):
+    data = ModelDataPrep(df,training_fraction,window_size)
+    data.gen_train()
+    data.gen_test()  
+    trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
+    testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
 
-model_suf = ''
-
-if 'model' in process_type:
     from keras.models import Sequential
     from keras.layers import Dense
     from keras.layers import LSTM
@@ -81,4 +73,25 @@ if 'model' in process_type:
     plt.tight_layout()
     plt.savefig("Plots/LSTM_train_"+range_name+model_suf+".png", transparent=True)
     #plt.savefig("Plots/LSTM_test_"+range_name+model_suf+".png", transparent=True)
+
+
+    
+def main():
+    spec_id = fav_stations[st]['id']
+    print(fav_stations[st]['name'])
+    histdata = HistoricalData(data_path,spec_id)
+    histdata.get_data_for_prediction()
+    df = histdata.data_for_prediction
+    print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
+    range_name = st+"_"+str(histdata.startdate)+"_"+str(histdata.stopdate)
+    model_suf = ''
+
+    if process_type=='tableau':
+        hist_data_tableau(df,range_name)
+
+    if 'model' in process_type:
+        get_predictions(df,range_name)
+
+if __name__ == "__main__":
+    main()
 
