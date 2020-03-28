@@ -56,7 +56,10 @@ def get_relative_hourly_price(data_dir,filename):
 data_dir = 'data/processed/total'
 filename = '2020-03-11-prices.csv'
 #filenames = ['2020-03-01-prices.csv']
-filenames = ['2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
+filenames = [
+    '2020-02-01-prices.csv','2020-02-02-prices.csv','2020-02-03-prices.csv','2020-02-04-prices.csv','2020-02-05-prices.csv','2020-02-06-prices.csv','2020-02-07-prices.csv','2020-02-08-prices.csv','2020-02-09-prices.csv','2020-02-10-prices.csv','2020-02-11-prices.csv','2020-02-12-prices.csv','2020-02-13-prices.csv',    
+             '2020-02-15-prices.csv','2020-02-16-prices.csv','2020-02-17-prices.csv','2020-02-18-prices.csv','2020-02-19-prices.csv','2020-02-20-prices.csv','2020-02-21-prices.csv','2020-02-22-prices.csv','2020-02-23-prices.csv','2020-02-24-prices.csv','2020-02-25-prices.csv','2020-02-26-prices.csv','2020-02-27-prices.csv','2020-02-28-prices.csv',
+             '2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
 #,'2020-03-15-prices.csv','2020-03-16-prices.csv','2020-03-17-prices.csv','2020-03-18-prices.csv','2020-03-19-prices.csv'
 for filename in filenames:
     day_info = get_relative_hourly_price(data_dir,filename)
@@ -66,7 +69,7 @@ day_hourly_change = day_hourly_change.set_index('date')
 print(day_hourly_change)
 day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
 day_hourly_change_plot = day_hourly_change.drop('min_val',axis=1)
-plot = day_hourly_change_plot.T.plot(kind='bar') #,legend=False)
+plot = day_hourly_change_plot.T.plot(kind='bar',legend=False)
 plot.set_title("Relative increase of price wrt minimal value")
 plot.set_xlabel("Time of the day")
 plot.set_ylabel("Price increase, %")
