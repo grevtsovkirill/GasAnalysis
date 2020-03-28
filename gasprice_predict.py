@@ -29,6 +29,16 @@ def hist_data_tableau(df,range_name):
     df.to_csv(file_name, sep=',')
 
 ###
+def plot_the_loss_curve(epochs, rmse):
+    """Plot the loss curve, which shows loss vs. epoch."""    
+    plt.figure()
+    plt.xlabel("Epoch")
+    plt.ylabel("Root Mean Squared Error")
+    
+    plt.plot(epochs, rmse, label="Loss")
+    plt.legend()
+    plt.ylim([rmse.min()*0.97, rmse.max()])
+    plt.show()
 
 def get_predictions(df,range_name):
     data = ModelDataPrep(df,training_fraction,window_size)
@@ -50,7 +60,11 @@ def get_predictions(df,range_name):
         model.add(LSTM(4, input_shape=(1, window_size)))
         model.add(Dense(1))
         model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
+        history = model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
+        epochs = history.epoch
+        hist = pd.DataFrame(history.history)
+        rmse = hist["loss"]
+        plot_the_loss_curve(epochs,rmse)
         model.save('Models/LSTM_'+range_name+'.h5')
         model_suf = 'train'
     elif process_type=='model_apply':
