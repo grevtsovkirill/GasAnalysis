@@ -5,9 +5,12 @@ from selected import *
 from plot_helper import * 
 
 import argparse
+from prep_data import *
+
 
 parser = argparse.ArgumentParser(description='Hisorical data:')
 parser.add_argument('-t','--type', required=True, type=str, choices=['hourly', 'daily'], help='Choose type: per hour during day or per day in week')
+parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
 parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
@@ -16,6 +19,7 @@ args = parser.parse_args()
 process_type = vars(args)["type"]
 debug = vars(args)["debug"]
 st = vars(args)["station"]
+selected_date = vars(args)["d0"].date()
 data_path = vars(args)["inpath"]
 
 
@@ -29,7 +33,7 @@ def prepare_hour_day_output():
     dayinfocols=np.append('date',dayinfocols)
     day_hourly_change = pd.DataFrame(columns=dayinfocols)
     return day_hourly_change
-            
+
 def create_hourly_array(df,gas_type='e5'):
     tt_array = prepare_hour_day_output()
     tt_array.drop(['date', 'min_val'], axis=1,inplace = True)
@@ -54,7 +58,6 @@ def create_hourly_array(df,gas_type='e5'):
                 price_hour_array[j]= price_hour_array[j-1]
     return price_hour_array
 
-
 def get_relative_hourly_price(data_dir,filename):
     dataset = pd.read_csv(os.path.join(data_dir, filename))
     dataset_spec = dataset.loc[dataset.station_uuid==spec_id]   
@@ -72,6 +75,7 @@ def get_relative_hourly_price(data_dir,filename):
     day_info=np.append(t_i,day_info)
     return day_info
 
+
 def plot_maker(df):
     #day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
     df = df.drop('min_val',axis=1)
@@ -83,21 +87,28 @@ def plot_maker(df):
     fig.tight_layout()
     fig.savefig("Plots/relative_hourly_change.png")
 
-filename = '2020-03-11-prices.csv'
-#filenames = ['2020-03-01-prices.csv']
-filenames = [
-    '2020-02-01-prices.csv','2020-02-02-prices.csv','2020-02-03-prices.csv','2020-02-04-prices.csv','2020-02-05-prices.csv','2020-02-06-prices.csv','2020-02-07-prices.csv','2020-02-08-prices.csv','2020-02-09-prices.csv','2020-02-10-prices.csv','2020-02-11-prices.csv','2020-02-12-prices.csv','2020-02-13-prices.csv',    
-             '2020-02-15-prices.csv','2020-02-16-prices.csv','2020-02-17-prices.csv','2020-02-18-prices.csv','2020-02-19-prices.csv','2020-02-20-prices.csv','2020-02-21-prices.csv','2020-02-22-prices.csv','2020-02-23-prices.csv','2020-02-24-prices.csv','2020-02-25-prices.csv','2020-02-26-prices.csv','2020-02-27-prices.csv','2020-02-28-prices.csv',
-             '2020-03-01-prices.csv','2020-03-02-prices.csv','2020-03-03-prices.csv','2020-03-04-prices.csv','2020-03-05-prices.csv','2020-03-06-prices.csv','2020-03-07-prices.csv','2020-03-08-prices.csv','2020-03-09-prices.csv','2020-03-10-prices.csv','2020-03-11-prices.csv','2020-03-12-prices.csv','2020-03-13-prices.csv','2020-03-14-prices.csv']
-#,'2020-03-15-prices.csv','2020-03-16-prices.csv','2020-03-17-prices.csv','2020-03-18-prices.csv','2020-03-19-prices.csv'
+def get_list_of_files(t_delta):
+    delta = datetime.timedelta(t_delta)
+    filenames = []
+    for i in range(delta.days + 1):
+        day_to_proc = selected_date - datetime.timedelta(days=i)
+        fname=str(day_to_proc)+'-prices.csv'
+        filenames.insert(0,fname)
+    return filenames
 
 if process_type == 'hourly':
     day_hourly_change = prepare_hour_day_output()
     dayinfocols = day_hourly_change.columns.values
+    filenames = get_list_of_files(41)
     for filename in filenames:
+        if 
         day_info = get_relative_hourly_price(data_path,filename)
         day_hourly_change = day_hourly_change.append(pd.Series(day_info,index=dayinfocols),ignore_index=True )
         
     day_hourly_change = day_hourly_change.set_index('date')
     plot_maker(day_hourly_change)
     print(day_hourly_change)
+elif process_type == 'daily':
+    filenames = get_list_of_files(41) 
+    print(selected_date,'\n',filenames)
+
