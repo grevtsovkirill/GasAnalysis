@@ -5,7 +5,7 @@ from plot_helper import *
 from selected import *
 import argparse
 
-parser = argparse.ArgumentParser(description='Upload data from sensor')
+parser = argparse.ArgumentParser(description='Hisorical data:')
 parser.add_argument('-t','--type', required=True, type=str, choices=['model_train','model_apply', 'tableau'], help='Choose type: do model training or application; get tableau data ')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
