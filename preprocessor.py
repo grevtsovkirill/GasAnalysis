@@ -10,13 +10,6 @@ log = logging.getLogger(__name__)
 from prep_data import *
 from plot_helper import *
 
-def valid_date(s):
-    try:
-        return datetime.datetime.strptime(s, "%d-%m-%Y")
-    except ValueError:
-        msg = "Not a valid date: '{0}'.".format(s)
-        raise argparse.ArgumentTypeError(msg)
-
 parser = argparse.ArgumentParser(description='Preprocess raw data')
 parser.add_argument('-t','--type', required=True, type=str, choices=['date', 'range'], help='Choose processing type: date or range ')
 parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')

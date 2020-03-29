@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import pathlib
+import datetime
 from calendar import monthrange
 
 #define geographical constraints
@@ -105,4 +106,11 @@ def give_me_data(mon=1,year=2020,spec_id = "e1a15081-2617-9107-e040-0b0a3dfe563c
     merged_data.loc[:,'date']=pd.to_datetime(merged_data['date'])
     merged_data.sort_values('date', ascending=True, inplace=True)
     return merged_data
+
+def valid_date(s):
+    try:
+        return datetime.datetime.strptime(s, "%d-%m-%Y")
+    except ValueError:
+        msg = "Not a valid date: '{0}'.".format(s)
+        raise argparse.ArgumentTypeError(msg)
 
