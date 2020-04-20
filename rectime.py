@@ -13,12 +13,14 @@ parser.add_argument('-t','--type', required=True, type=str, choices=['hourly', '
 parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
+parser.add_argument('--delta', type=int, default=41, help="Number of days to step back for weekly estimations") 
 parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
 args = parser.parse_args()
 
 process_type = vars(args)["type"]
 debug = vars(args)["debug"]
 st = vars(args)["station"]
+delta = vars(args)["delta"]
 selected_date = vars(args)["d0"].date()
 data_path = vars(args)["inpath"]
 
@@ -99,9 +101,8 @@ def get_list_of_files(t_delta):
 if process_type == 'hourly':
     day_hourly_change = prepare_hour_day_output()
     dayinfocols = day_hourly_change.columns.values
-    filenames = get_list_of_files(41)
+    filenames = get_list_of_files(delta)
     for filename in filenames:
-        if 
         day_info = get_relative_hourly_price(data_path,filename)
         day_hourly_change = day_hourly_change.append(pd.Series(day_info,index=dayinfocols),ignore_index=True )
         
@@ -109,6 +110,6 @@ if process_type == 'hourly':
     plot_maker(day_hourly_change)
     print(day_hourly_change)
 elif process_type == 'daily':
-    filenames = get_list_of_files(41) 
+    filenames = get_list_of_files(delta) 
     print(selected_date,'\n',filenames)
 
