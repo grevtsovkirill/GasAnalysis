@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import pathlib
 from selected import *
 from plot_helper import * 
 
@@ -103,13 +104,21 @@ if process_type == 'hourly':
     dayinfocols = day_hourly_change.columns.values
     filenames = get_list_of_files(delta)
     for filename in filenames:
-        day_info = get_relative_hourly_price(data_path,filename)
-        day_hourly_change = day_hourly_change.append(pd.Series(day_info,index=dayinfocols),ignore_index=True )
+        if pathlib.Path(data_path+"/"+filename).is_file():
+            day_info = get_relative_hourly_price(data_path,filename)
+            day_hourly_change = day_hourly_change.append(pd.Series(day_info,index=dayinfocols),ignore_index=True )
+        else:
+            print("file does NOT exist")
         
     day_hourly_change = day_hourly_change.set_index('date')
     plot_maker(day_hourly_change)
     print(day_hourly_change)
 elif process_type == 'daily':
     filenames = get_list_of_files(delta) 
-    print(selected_date,'\n',filenames)
-
+    #print(selected_date,'\n',filenames)
+    for filename in filenames:
+        if pathlib.Path(data_path+"/"+filename).is_file():
+            print(filename)
+        else:
+            print("file does NOT exist")
+        
