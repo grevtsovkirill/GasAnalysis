@@ -78,6 +78,14 @@ def get_relative_hourly_price(data_dir,filename):
     day_info=np.append(t_i,day_info)
     return day_info
 
+def get_relative_daily_price(data_dir,filename):
+    dataset = pd.read_csv(os.path.join(data_dir, filename))
+    dataset_spec = dataset.loc[dataset.station_uuid==spec_id]   
+    dataset_spec = dataset_spec.loc[dataset.e5change==1]
+    dataset_spec['date'] = pd.to_datetime(dataset_spec['date'])
+    dataset_spec = dataset_spec.loc[dataset_spec[gas_type]<=dataset_spec[gas_type].min()][:1]
+    return dataset_spec
+
 
 def plot_maker(df):
     #day_hourly_change.to_csv("data/Tableau/per_hour/test_03_1014.csv")
@@ -118,7 +126,12 @@ elif process_type == 'daily':
     #print(selected_date,'\n',filenames)
     for filename in filenames:
         if pathlib.Path(data_path+"/"+filename).is_file():
+            date = datetime.datetime.strptime(filename[0:10],"%Y-%m-%d")
+            date = date.date()  
             print(filename)
+            print(date.weekday(), date.isocalendar()[1])
+            #week_info = get_relative_daily_price(data_path,filename)
+            #print(week_info)
         else:
             print("file does NOT exist")
         
