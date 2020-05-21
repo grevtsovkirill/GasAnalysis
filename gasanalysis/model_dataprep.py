@@ -81,6 +81,6 @@ class ModelDataPrep:
         self.X_test = self.X_test*2
         self.Y_test = self.Y_test*2
         
-    def invtransform(self,df):
+    def invtransform(self,df):    
         df=df*2
         return df

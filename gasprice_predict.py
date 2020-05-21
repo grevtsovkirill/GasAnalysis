@@ -61,7 +61,7 @@ def get_predictions(df,range_name):
     trainPredict = model.predict(trainX)
     testPredict = model.predict(testX)
 
-    data.price_invtransform()
+    data.price_invtransform()    
     trainPredict = data.invtransform(trainPredict)
     testPredict = data.invtransform(testPredict)
     
