@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 from gasanalysis import prep_data
-from plot_helper import *
 
 parser = argparse.ArgumentParser(description='Preprocess raw data')
 parser.add_argument('-t','--type', required=True, type=str, choices=['date', 'range'], help='Choose processing type: date or range ')
@@ -34,9 +33,7 @@ def main():
     if process_type=='date':
         prep_data.prepare_data(initial_date)
     else:
-        #print(initial_date,final_date)
-        delta = final_date - initial_date
-        
+        delta = final_date - initial_date        
         for i in range(delta.days + 1):
             day_to_proc = initial_date + datetime.timedelta(days=i)
             print(day_to_proc)
