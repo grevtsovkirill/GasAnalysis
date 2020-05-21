@@ -4,10 +4,10 @@ import pandas as pd
 from gasanalysis import plot_helper
 from keras.models import Sequential,load_model
 from keras.layers import Dense, LSTM
-from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop,Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
-def create_model(window_size):
+def create_model(window_size, learning_rate = 0.001):
     model = Sequential()
     model.add(LSTM(4, input_shape=(1, window_size)))
     model.add(Dense(units = 24,
@@ -20,8 +20,9 @@ def create_model(window_size):
                     name='Output'))
     model.compile(loss='mean_squared_error',
                   #metrics = ['mse'],
-                  optimizer='adam'
-                  #optimizer=RMSprop(lr=0.01)
+                  #optimizer='adam'
+                  optimizer=Adam(lr=learning_rate)
+                  #optimizer=RMSprop(lr=learning_rate)
     )
     return model
 
