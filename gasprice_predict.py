@@ -53,8 +53,7 @@ def get_predictions(df,range_name):
     # make predictions using trained/loaded model:
     trainPredict = model.predict(trainX)
     testPredict = model.predict(testX)
-    print(model.summary,trainX,trainPredict)
-    
+
     fig, (ax1, ax2) = plt.subplots(1,2)
     ax1.plot(data.Y_train,label='Train Data')
     ax1.plot(trainPredict,label='Train Prediction')
