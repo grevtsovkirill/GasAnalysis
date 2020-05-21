@@ -1,8 +1,9 @@
 import numpy as np
 
-from model_dataprep import *
-from plot_helper import *
-from selected import *
+from gasanalysis import prep_data
+from gasanalysis import selected
+from gasanalysis import plot_helper
+from gasanalysis import model_dataprep
 import argparse
 
 parser = argparse.ArgumentParser(description='Hisorical data:')
@@ -24,7 +25,7 @@ data_path = vars(args)["inpath"]
 
 ###
 def hist_data_tableau(df,range_name):
-    plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
+    plot_helper.plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
     file_name = 'data/Tableau/'+range_name+'.csv'
     df.to_csv(file_name, sep=',')
 
@@ -90,9 +91,9 @@ def get_predictions(df,range_name):
 
     
 def main():
-    spec_id = fav_stations[st]['id']
-    print(fav_stations[st]['name'])
-    histdata = HistoricalData(data_path,spec_id)
+    spec_id = selected.fav_stations[st]['id']
+    print(selected.fav_stations[st]['name'])
+    histdata = model_dataprep.HistoricalData(data_path,spec_id)
     histdata.get_data_for_prediction()
     df = histdata.data_for_prediction
     print("Available data from: ",histdata.startdate," to ",histdata.stopdate)
