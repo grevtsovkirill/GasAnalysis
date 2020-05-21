@@ -16,7 +16,8 @@ def create_model(window_size, learning_rate = 0.001):
     model.add(Dense(units = 12,
                     activation='relu', 
                     name='Hidden2'))
-    model.add(Dense(units=1,  
+    model.add(Dense(units=1,
+                    activation='linear',
                     name='Output'))
     model.compile(loss='mean_squared_error',
                   #metrics = ['mse'],
@@ -46,10 +47,11 @@ def train_model(model, X,Y,range_name,
     
     plot_helper.plot_the_loss_curve(epochs,rmse,vrmse)
     model.save('Models/LSTM_'+range_name+'.h5')
+    model.save('Models/LSTM_last.h5')
     return model, epochs, hist
 
-def pred_model(X,Y,window_size,range_name):
-    model = create_model(window_size)
+def pred_model(X,Y,window_size,range_name,learning_rate):
+    model = create_model(window_size,learning_rate)
     model, epochs, hist = train_model(model, X, Y,range_name)
         
     return model

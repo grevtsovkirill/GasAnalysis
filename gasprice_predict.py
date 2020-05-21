@@ -11,11 +11,14 @@ import argparse
 parser = argparse.ArgumentParser(description='Hisorical data:')
 parser.add_argument('-t','--type', required=True, type=str, choices=['model_train','model_apply', 'tableau'], help='Choose type: do model training or application; get tableau data ')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
+parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
 parser.add_argument('--tf', required=False, type=float, default=0.69, help="Fraction of used data for training")
+parser.add_argument('--lr', required=False, type=float, default=0.001, help="learning rate")
 parser.add_argument('--win_size', required=False, type=int, default=10, help="Size of training window") 
-parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
+parser.add_argument('--modname', type=str, default='last', help="Name of model ") 
 args = parser.parse_args()
+
 
 process_type = vars(args)["type"]
 debug = vars(args)["debug"]
@@ -23,6 +26,8 @@ st = vars(args)["station"]
 training_fraction = vars(args)["tf"]
 window_size = vars(args)["win_size"]
 data_path = vars(args)["inpath"]
+mod_name = vars(args)["modname"]
+learning_rate= vars(args)["lr"]
 
 
 ###
@@ -44,10 +49,11 @@ def get_predictions(df,range_name):
     import matplotlib.dates as mdates
     
     if process_type=='model_train':
-        model = model_arch.pred_model(trainX, data.Y_train,window_size,range_name)
+        model = model_arch.pred_model(trainX, data.Y_train,window_size,range_name,learning_rate)
         model_suf = 'train'
     elif process_type=='model_apply':
-        model = load_model('Models/LSTM_'+range_name+'.h5')
+        #model = load_model('Models/LSTM_'+range_name+'.h5')    
+        model = load_model('Models/LSTM_'+mod_name+'.h5')
         model_suf = 'load'
 
     # make predictions using trained/loaded model:
