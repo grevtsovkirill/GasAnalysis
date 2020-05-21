@@ -40,9 +40,9 @@ def hist_data_tableau(df,range_name):
 def get_predictions(df,range_name):
     data = model_dataprep.ModelDataPrep(df,training_fraction,window_size)
     data.gen_train()
-    data.gen_test()  
+    data.gen_test()
+    data.price_transform()
     trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
-    testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
 
     from keras.models import load_model
     import matplotlib.pyplot as plt
@@ -57,9 +57,14 @@ def get_predictions(df,range_name):
         model_suf = 'load'
 
     # make predictions using trained/loaded model:
+    testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
     trainPredict = model.predict(trainX)
     testPredict = model.predict(testX)
 
+    data.price_invtransform()
+    trainPredict = data.invtransform(trainPredict)
+    testPredict = data.invtransform(testPredict)
+    
     fig, (ax1, ax2) = plt.subplots(1,2)
     ax1.plot(data.Y_train,label='Train Data')
     ax1.plot(trainPredict,label='Train Prediction')

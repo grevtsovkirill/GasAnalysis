@@ -68,4 +68,19 @@ class ModelDataPrep:
         x, y = self.gen_sample(self.price_test)
         self.X_test = x
         self.Y_test = y
-    
+
+    def price_transform(self):
+        self.X_train = self.X_train/2
+        self.Y_train = self.Y_train/2
+        self.X_test = self.X_test/2
+        self.Y_test = self.Y_test/2
+
+    def price_invtransform(self):
+        self.X_train = self.X_train*2
+        self.Y_train = self.Y_train*2
+        self.X_test = self.X_test*2
+        self.Y_test = self.Y_test*2
+        
+    def invtransform(self,df):
+        df=df*2
+        return df
