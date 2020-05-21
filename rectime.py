@@ -2,16 +2,15 @@ import pandas as pd
 import numpy as np
 import os
 import pathlib
-from selected import *
-from plot_helper import * 
-
+import datetime
 import argparse
-from prep_data import *
 
+from gasanalysis import prep_data
+from gasanalysis import selected
 
-parser = argparse.ArgumentParser(description='Hisorical data:')
+parser = argparse.ArgumentParser(description='Weekly and daily recommendations:')
 parser.add_argument('-t','--type', required=True, type=str, choices=['hourly', 'daily'], help='Choose type: per hour during day or per day in week')
-parser.add_argument('--d0', required=True, type=valid_date, help='Date in format DD-MM-YYYY')
+parser.add_argument('--d0', required=True, type=prep_data.valid_date, help='Date in format DD-MM-YYYY')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
 parser.add_argument('--delta', type=int, default=41, help="Number of days to step back for weekly estimations") 
@@ -26,7 +25,8 @@ selected_date = vars(args)["d0"].date()
 data_path = vars(args)["inpath"]
 
 
-spec_id = fav_stations[st]['id']
+spec_id = selected.fav_stations[st]['id']
+gas_type = selected.gas_type
 def prepare_hour_day_output():
     time_split_array = pd.date_range("06:00", "23:59", freq="30min").time
     for i in range(len(time_split_array)):
