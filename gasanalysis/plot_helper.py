@@ -34,3 +34,16 @@ def plot_over_day(data,to_save=False,name='',lab_str='',gas_type='e5'):
     if to_save:
         plt.savefig("Plots/"+name+".png", transparent=True)
         
+###
+def plot_the_loss_curve(epochs, rmse, vrmse):
+    """Plot the loss curve, which shows loss vs. epoch."""    
+    plt.figure()
+    plt.xlabel("Epoch")
+    plt.ylabel("Root Mean Squared Error")
+    
+    plt.plot(epochs, rmse, label="Loss")
+    plt.plot(epochs, vrmse, label="Validation Loss")
+    plt.legend()
+    plt.ylim([rmse.min()*0.97, rmse.max()])
+    #plt.show()
+    plt.savefig("Plots/loss_epochs_rmse.png", transparent=True)

@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from gasanalysis import prep_data
 from gasanalysis import selected
@@ -12,7 +13,7 @@ parser.add_argument('-s','--station', required=True, type=str, choices=['star_ho
 parser.add_argument('--debug', required=False, default=False, type=bool, help='For local checks ')
 parser.add_argument('--tf', required=False, type=float, default=0.69, help="Fraction of used data for training")
 parser.add_argument('--win_size', required=False, type=int, default=10, help="Size of training window") 
-parser.add_argument('--inpath', type=str, default='data/processed/total', help="Path of input data") 
+parser.add_argument('--inpath', type=str, default='data/processed/total_test', help="Path of input data") 
 args = parser.parse_args()
 
 process_type = vars(args)["type"]
@@ -29,29 +30,17 @@ def hist_data_tableau(df,range_name):
     file_name = 'data/Tableau/'+range_name+'.csv'
     df.to_csv(file_name, sep=',')
 
-###
-def plot_the_loss_curve(epochs, rmse):
-    """Plot the loss curve, which shows loss vs. epoch."""    
-    plt.figure()
-    plt.xlabel("Epoch")
-    plt.ylabel("Root Mean Squared Error")
-    
-    plt.plot(epochs, rmse, label="Loss")
-    plt.legend()
-    plt.ylim([rmse.min()*0.97, rmse.max()])
-    plt.show()
 
 def get_predictions(df,range_name):
-    data = ModelDataPrep(df,training_fraction,window_size)
+    data = model_dataprep.ModelDataPrep(df,training_fraction,window_size)
     data.gen_train()
     data.gen_test()  
     trainX = np.reshape(data.X_train, (data.X_train.shape[0], 1, data.X_train.shape[1]))
     testX = np.reshape(data.X_test, (data.X_test.shape[0], 1, data.X_test.shape[1]))
 
-    from keras.models import Sequential
-    from keras.layers import Dense
-    from keras.layers import LSTM
-    from keras.models import load_model
+    from keras.models import Sequential,load_model
+    from keras.layers import Dense, LSTM
+    from keras.optimizers import RMSprop
 
     import matplotlib.pyplot as plt
     import matplotlib.dates as mdates
@@ -59,13 +48,30 @@ def get_predictions(df,range_name):
     if process_type=='model_train':
         model = Sequential()
         model.add(LSTM(4, input_shape=(1, window_size)))
-        model.add(Dense(1))
-        model.compile(loss='mean_squared_error', optimizer='adam')
-        history = model.fit(trainX, data.Y_train, epochs=100, batch_size=1, verbose=2)
+        model.add(Dense(units = 1,
+                        activation='relu', 
+                        name='Hidden1'))
+        # Define the output layer.
+        model.add(Dense(units=1,  
+                        name='Output'))
+        model.compile(loss='mean_squared_error',
+                      metrics = ['mean_squared_error'],
+                      #optimizer='adam'
+                      optimizer=RMSprop(lr=0.01)
+        )
+
+        history = model.fit(trainX, data.Y_train,
+                            epochs=100, batch_size=1000, verbose=2,
+                            validation_split=0.2
+        )
+
         epochs = history.epoch
         hist = pd.DataFrame(history.history)
+        print(history.history.keys())
         rmse = hist["loss"]
-        plot_the_loss_curve(epochs,rmse)
+        vrmse = hist["val_loss"]
+
+        plot_helper.plot_the_loss_curve(epochs,rmse,vrmse)
         model.save('Models/LSTM_'+range_name+'.h5')
         model_suf = 'train'
     elif process_type=='model_apply':
