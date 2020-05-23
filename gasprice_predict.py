@@ -6,6 +6,8 @@ from gasanalysis import selected
 from gasanalysis import plot_helper
 from gasanalysis import model_dataprep
 from gasanalysis import model_arch
+
+from tests import tests
 import argparse
 
 parser = argparse.ArgumentParser(description='Hisorical data:')
@@ -89,11 +91,15 @@ def main():
     range_name = st+"_"+str(histdata.startdate)+"_"+str(histdata.stopdate)
     model_suf = ''
 
-    if process_type=='tableau':
-        hist_data_tableau(df,range_name)
+    if not debug:
+        if process_type=='tableau':
+            hist_data_tableau(df,range_name)
 
-    if 'model' in process_type:
-        get_predictions(df,range_name)
+        if 'model' in process_type:
+            get_predictions(df,range_name)
+    else:        
+        print(df.head(),df.describe())
+        tests.test_data_schema(df, tests.gas_schema)
 
 if __name__ == "__main__":
     main()
