@@ -100,7 +100,7 @@ def main():
     else:        
         print(df.head(),df.describe())
         tests.test_data_schema(df, tests.gas_schema)
-
+        tests.test_nulls(df)
 if __name__ == "__main__":
     main()
 

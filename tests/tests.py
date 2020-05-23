@@ -1,4 +1,6 @@
+import unittest
 import datetime
+
 gas_schema = {
     'e5': {
         'range': {
@@ -46,3 +48,9 @@ def test_data_schema(input_data, schema):
 
   test_dtypes()
   test_ranges()
+
+
+def test_nulls(df):
+  dataNulls = df.isnull().sum().sum()
+  assert dataNulls == 0, "Nulls in input data."
+  print('Input data do not contain nulls.')
