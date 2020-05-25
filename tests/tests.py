@@ -54,3 +54,7 @@ def test_nulls(df):
   dataNulls = df.isnull().sum().sum()
   assert dataNulls == 0, "Nulls in input data."
   print('Input data do not contain nulls.')
+
+
+if __name__ == '__main__':
+    unittest.main()
