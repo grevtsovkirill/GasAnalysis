@@ -6,6 +6,7 @@ from keras.models import Sequential,load_model
 from keras.layers import Dense, LSTM
 from keras.optimizers import RMSprop,Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
 
 def create_model(window_size, learning_rate = 0.001):
     model = Sequential()
@@ -56,3 +57,15 @@ def pred_model(X,Y,window_size,range_name,learning_rate):
         
     return model
     
+def do_summary(X,Y,Y_pred,trX,trY,trY_pred):
+    with open("summary.txt", "w") as f:
+        f.write("Parameters:\n")
+        f.write("MAE = {} ({}) \n".format(mean_absolute_error(Y,Y_pred),mean_absolute_error(trY,trY_pred)))
+        f.write("MSE = {} ({}) \n".format(mean_squared_error(Y,Y_pred),mean_squared_error(trY,trY_pred)))
+        f.write("mean Ytest={} \n".format(Y.mean()))    
+        f.write("act MAE = {}, MSE = {}) \n".format(np.exp(mean_absolute_error(Y,Y_pred)), np.exp(mean_squared_error(Y,Y_pred))))
+        f.write("act mean Ytest= {}\n".format(np.exp(Y.mean())) )
+        
+    print("MAE = {} ({}) ".format(mean_absolute_error(Y,Y_pred),mean_absolute_error(trY,trY_pred)))
+    print("MSE = {} ({}) ".format(mean_squared_error(Y,Y_pred),mean_squared_error(trY,trY_pred)))
+    print("mean Ytest= ",Y.mean())    
