@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pathlib
 
 from gasanalysis import prep_data
 from gasanalysis import selected
@@ -35,6 +36,7 @@ learning_rate= vars(args)["lr"]
 ###
 def hist_data_tableau(df,range_name):
     plot_helper.plot_over_time(df,True,'e5_variation_'+range_name,'Price evolution of ')
+    pathlib.Path("data/Tableau").mkdir(parents=True, exist_ok=True)
     file_name = 'data/Tableau/'+range_name+'.csv'
     df.to_csv(file_name, sep=',')
 
