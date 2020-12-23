@@ -77,6 +77,7 @@ def prepare_data(indate):
     day=day_to_num_str(indate)
     mon=month_to_num_str(indate.month)
     year=str(indate.year)
+    pathlib.Path("data/processed/"+year+"/"+mon).mkdir(parents=True, exist_ok=True)
     name=year+"/"+mon+"/"+year+"-"+mon+"-"+day+"-prices.csv"
     my_file = pathlib.Path("data/processed/"+name)
     if not my_file.exists ():
