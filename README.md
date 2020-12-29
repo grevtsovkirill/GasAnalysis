@@ -13,7 +13,7 @@ Build interactive dashbord with hisorical data ["Tableau dash"](https://public.t
 ### Price
 Train LSTM model to predict "next-day-price":
 
-![alt text](https://github.com/grevtsovkirill/GasAnalysis/blob/master/Plots/LSTM_train_hem_home_2014-06-08_2020-12-26train.png )
+![alt text](https://github.com/grevtsovkirill/GasAnalysis/blob/master/Plots/LSTM_train_star_home_2014-07-01_2020-12-26train.png)
 
 ### Time
 Predict the right time to refill. Estimate the time ranges during the day where relative increase of the price wrt to day's minimum was lowest (i.e. 0% means minimal price):
