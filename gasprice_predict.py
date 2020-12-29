@@ -11,6 +11,10 @@ from gasanalysis import model_arch
 from tests import tests
 import argparse
 
+from datetime import datetime
+start_time = datetime.now()
+print("Start time: ", start_time)
+
 parser = argparse.ArgumentParser(description='Hisorical data:')
 parser.add_argument('-t','--type', required=True, type=str, choices=['model_train','model_apply', 'tableau'], help='Choose type: do model training or application; get tableau data ')
 parser.add_argument('-s','--station', required=True, type=str, choices=['star_home','aral_home','hem_home'], help='Choose station ')
@@ -106,4 +110,6 @@ def main():
         tests.test_nulls(df)
 if __name__ == "__main__":
     main()
+    end_time = datetime.now()
+    print("finished at ",end_time,'\n execution time = ',end_time - start_time)
 
